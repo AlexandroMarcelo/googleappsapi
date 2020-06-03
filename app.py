@@ -38,6 +38,8 @@ prediction_client = automl.PredictionServiceClient.from_service_account_json("sy
 def index():
     avg_genres = {}
     #print( sorted(set(data_google_store['Category'])))
+    data_google_store = pd.read_csv("./googleplaystore.csv")
+
     for genre in sorted(set(data_google_store['Category'])):
         avg_genres[genre] = list(data_google_store['Category']).count(str(genre)) / len(data_google_store['Category']) *100
     #print(avg_genres)
@@ -49,7 +51,8 @@ def index():
 @cross_origin()
 def overview():
     json_file = {}
-    
+    data_google_store = pd.read_csv("./googleplaystore.csv")
+
     categories = data_google_store.pivot_table(index=['Category'], aggfunc='size')
 
     # print(data_google_store["Size"].replace('M', '', regex=True))
@@ -90,6 +93,7 @@ def overview():
 def categories():
     avg_genres=[]
     json_file={}
+    data_google_store = pd.read_csv("./googleplaystore.csv")
     #print( sorted(set(data_google_store['Category'])))
     for genre in sorted(set(data_google_store['Category'])):
         if genre != "1.9":
@@ -107,7 +111,7 @@ def group_by_rating():
     json_file = {}
     sorted_json = {}
     array_ = []
-
+    data_google_store = pd.read_csv("./googleplaystore.csv")
     #json_file = dict(data_google_store)
     
     # Sorting the data by Rating and saving it in a DF called test
@@ -238,7 +242,7 @@ def best_price_by_gender():
 @cross_origin()
 def top_category_by_installs():
     json_file = {}
-    
+    data_google_store = pd.read_csv("./googleplaystore.csv")
     # Creating a dataframe to make it easy to read and analyze the information 
     dfa_ps = pd.DataFrame({
         "Category" : data_google_store["Category"],
@@ -349,7 +353,7 @@ def android_versions():
 @app.route("/appsbycategory", methods=['GET','POST'])
 @cross_origin()
 def appsByCategory():
-   
+    data_google_store = pd.read_csv("./googleplaystore.csv")
     #rgba='#{:02x}{:02x}{:02x}{:02x}'.format( 150, value, 255, 255)
     json_file = {}
     count = data_google_store[['Category','Rating']].groupby('Category')['Rating'] \
